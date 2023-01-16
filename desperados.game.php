@@ -1,10 +1,11 @@
 <?php
 
+use Core\Managers\PlayerManager;
 use Desperados\Game\ZombieTrait;
 
 $swdNamespaceAutoload = function ($class) {
     $classParts = explode('\\', $class);
-    
+
     if ($classParts[0] == 'Desperados') {
         array_shift($classParts);
         //var_dump(dirname(__FILE__) . '/modules/php/' . implode(DIRECTORY_SEPARATOR, $classParts) . '.php');die;
@@ -14,6 +15,16 @@ $swdNamespaceAutoload = function ($class) {
         } else {
             var_dump("Impossible to load Desperados class : $class");
         }
+    } elseif ($classParts[0] == 'Core') {
+        array_shift($classParts);
+
+        //var_dump(dirname(__FILE__) . '/modules/php/Core/' . implode(DIRECTORY_SEPARATOR, $classParts) . '.php');die;
+        $file = dirname(__FILE__) . '/modules/php/Core/' . implode(DIRECTORY_SEPARATOR, $classParts) . '.php';
+        if (file_exists($file)) {
+            require_once $file;
+        } else {
+            var_dump("Impossible to load Core class : $class");
+        }
     }
 };
 spl_autoload_register($swdNamespaceAutoload, true, true);
@@ -21,7 +32,7 @@ spl_autoload_register($swdNamespaceAutoload, true, true);
 require_once( APP_GAMEMODULE_PATH . 'module/table/table.game.php' );
 
 class Desperados extends Table {
-    
+
     use ZombieTrait;
 
     /**
@@ -29,11 +40,18 @@ class Desperados extends Table {
      * @var Desperados
      */
     private static $instance;
-    
+
+    /**
+     * @var PlayerManager
+     */
+    private $playerManager;
+
     public function __construct() {
         parent::__construct();
 
         self::$instance = $this;
+        
+        $this->playerManager = new PlayerManager();
 
         self::initGameStateLabels(array(
                 //    "my_first_global_variable" => 10,
@@ -133,11 +151,6 @@ class Desperados extends Table {
         return 0;
     }
 
-
-
-
-    
-
 ///////////////////////////////////////////////////////////////////////////////////:
 ////////// DB upgrade
 //////////
@@ -175,6 +188,10 @@ class Desperados extends Table {
 //        // Please add your future database scheme changes here
 //
 //
+    }
+
+    public function getPlayerManager(): PlayerManager {
+        return $this->playerManager;
     }
 
 }
