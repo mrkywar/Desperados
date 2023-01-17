@@ -36,7 +36,7 @@
 CREATE TABLE IF NOT EXISTS `gangmember` (
   `member_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `member_familly` varchar(50) NOT NULL,
-  `member_name` varchar(50) NOT NULL,
+  --`member_name` varchar(50) NOT NULL,
   `member_difficulty` int(2) NOT NULL, 
   `member_category` int(10) NOT NULL, 
   PRIMARY KEY (`member_id`)

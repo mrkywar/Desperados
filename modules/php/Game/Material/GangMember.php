@@ -55,7 +55,7 @@ class GangMember extends Model {
     /**
      * 
      * @var string
-     * @ORM\Column{"type":"int", "name":"member_category"}
+     * @ORM\Column{"type":"string", "name":"member_category"}
      */
     private $category;
 
@@ -71,16 +71,12 @@ class GangMember extends Model {
         return $this->familly;
     }
 
-    public function getName(): string {
-        return $this->name;
-    }
-
     public function getDifficulty(): int {
         return $this->difficulty;
     }
 
     public function getCategory(): string {
-        return self::GANG_CATEGORIES[$this->category];
+        return $this->category;
     }
 
     public function setId(?int $id) {
@@ -93,20 +89,13 @@ class GangMember extends Model {
         return $this;
     }
 
-    public function setName(string $name) {
-        $this->name = $name;
-        return $this;
-    }
-
     public function setDifficulty(int $difficulty) {
         $this->difficulty = $difficulty;
         return $this;
     }
 
     public function setCategory(string $category) {
-        if (array_search($category, self::GANG_CATEGORIES)) {
-            $this->category = $category;
-        }
+        $this->category = $category;
         return $this;
     }
 
