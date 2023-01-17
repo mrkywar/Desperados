@@ -85,6 +85,16 @@ class Player extends Model {
     private $isEliminated;
 
     /* -------------------------------------------------------------------------
+     *                  BEGIN - Custom fields
+     * ---------------------------------------------------------------------- */
+
+    /**
+     * @var string|null
+     * @ORM\Column{"type":"string", "name":"player_gang", "default":"'TBD'"}
+     */
+    private $gang;
+
+    /* -------------------------------------------------------------------------
      *                  BEGIN - Constructor
      * ---------------------------------------------------------------------- */
 
@@ -188,5 +198,19 @@ class Player extends Model {
         $this->isEliminated = $isEliminated;
         return $this;
     }
+
+    /* -------------------------------------------------------------------------
+     *                  BEGIN - Custom Getters & Setters 
+     * ---------------------------------------------------------------------- */
+
+    public function getGang(): ?string {
+        return $this->gang;
+    }
+
+    public function setGang(?string $gang) {
+        $this->gang = $gang;
+        return $this;
+    }
+
 
 }

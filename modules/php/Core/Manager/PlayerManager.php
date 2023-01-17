@@ -36,7 +36,7 @@ class PlayerManager extends SuperManager {
      *                  BEGIN - Score Methods
      * ---------------------------------------------------------------------- */
 
-    public function updateScore(Player $player){
+    public function updateScore(Player $player) {
         $qb = $this->prepareUpdate($player);
 
         $fieldScore = DBFieldsRetriver::retriveFieldByPropertyName("score", $player);
