@@ -15,18 +15,10 @@ use Core\Models\Core\Model;
  */
 class GangMember extends Model {
 
-    const GANG_CATEGORIES = array(
-        1 => "The Cheat",
-        2 => "The Bully",
-        3 => "The Ugly",
-        4 => "The Bad Girl",
-        5 => "The Boss"
-    );
-
     /**
      * 
      * @var int|null
-     * @ORM\Column{"type":"integer", "name":"member_id"}
+     * @ORM\Column{"type":"integer", "name":"member_id", "exclude":["insert"]}
      * @ORM\Id
      */
     private $id;
@@ -37,13 +29,6 @@ class GangMember extends Model {
      * @ORM\Column{"type":"string", "name":"member_familly"}
      */
     private $familly;
-
-    /**
-     * 
-     * @var string
-     * @ORM\Column{"type":"string", "name":"member_name"}
-     */
-    private $name;
 
     /**
      * 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Desperados\Game;
+namespace Desperados\Game\Managers;
 
 use Core\Managers\Core\SuperManager;
 use Core\Serializers\Serializer;
@@ -15,12 +15,15 @@ use Desperados\Game\Material\GangMember;
 class GangMemberManager extends SuperManager {
 
     public function initNewGame() {
-        $members = new GangMember();
+        $members = [];
         foreach (GANG_AVIABLE_FAMILLIES as $familly) {
             $members = array_merge($members, GangMemberFactory::create($familly));
         }
-        var_dump($members);
-        die;
+
+        
+        $this->create($members);
+        
+        return $members;
     }
 
     protected function initSerializer(): Serializer {

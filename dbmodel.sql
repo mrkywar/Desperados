@@ -38,6 +38,6 @@ CREATE TABLE IF NOT EXISTS `gangmember` (
   `member_familly` varchar(50) NOT NULL,
   --`member_name` varchar(50) NOT NULL,
   `member_difficulty` int(2) NOT NULL, 
-  `member_category` int(10) NOT NULL, 
+  `member_category` varchar(50) NOT NULL, 
   PRIMARY KEY (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

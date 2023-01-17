@@ -32,6 +32,6 @@ $this->card_types = array(
 
 */
 
-
+require_once 'modules/constants.inc.php';
 
 
