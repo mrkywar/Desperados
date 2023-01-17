@@ -1,6 +1,7 @@
 <?php
 
 use Core\Managers\PlayerManager;
+use Desperados\Game\Managers\GangMemberManager;
 use Desperados\Game\ZombieTrait;
 
 $swdNamespaceAutoload = function ($class) {
@@ -45,6 +46,12 @@ class Desperados extends Table {
      * @var PlayerManager
      */
     private $playerManager;
+    
+    /**
+     * 
+     * @var GangMemberManager
+     */
+    private $gangMemberManager;
 
     public function __construct() {
         parent::__construct();
@@ -52,6 +59,7 @@ class Desperados extends Table {
         self::$instance = $this;
 
         $this->playerManager = new PlayerManager();
+        $this->gangMemberManager = new GangMemberManager();
 
         self::initGameStateLabels(array(
                 //    "my_first_global_variable" => 10,
@@ -77,6 +85,7 @@ class Desperados extends Table {
 
     protected function setupNewGame($players, $options = array()) {
         $this->getPlayerManager()->initNewGame($players, $options);
+        $this->gangMemberManager->initNewGame();
 
         $this->activeNextPlayer();
     }
@@ -99,6 +108,8 @@ class Desperados extends Table {
         // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
         $sql = "SELECT player_id id, player_score score FROM player ";
         $result['players'] = self::getCollectionFromDb($sql);
+        
+        
 
         // TODO: Gather all information about current game situation (visible by player $current_player_id).
 
@@ -161,12 +172,29 @@ class Desperados extends Table {
 //
     }
 
+    /**
+     * 
+     * @return Desperados
+     */
     public static function getInstance(): Desperados {
         return self::$instance;
     }
 
+    /**
+     * 
+     * @return PlayerManager
+     */
     public function getPlayerManager(): PlayerManager {
         return $this->playerManager;
     }
+
+    /**
+     * 
+     * @return GangMemberManager
+     */
+    public function getGangMemberManager(): GangMemberManager {
+        return $this->gangMemberManager;
+    }
+
 
 }
