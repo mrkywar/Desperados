@@ -25,7 +25,7 @@ class PlayerManager extends SuperManager {
             $color = array_shift($defaultColors);
             $player->setColor($color);
         }
-
+        $this->setIsDebug(true);
         $this->create($players);
 
         Desperados::getInstance()->reattributeColorsBasedOnPreferences($rawPlayers, $gameinfos['player_colors']);
@@ -36,7 +36,7 @@ class PlayerManager extends SuperManager {
      *                  BEGIN - Score Methods
      * ---------------------------------------------------------------------- */
 
-    public function updateScore(Player $player){
+    public function updateScore(Player $player) {
         $qb = $this->prepareUpdate($player);
 
         $fieldScore = DBFieldsRetriver::retriveFieldByPropertyName("score", $player);

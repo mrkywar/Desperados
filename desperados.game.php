@@ -1,6 +1,7 @@
 <?php
 
 use Core\Managers\PlayerManager;
+use Core\Logger\Logger;
 use Desperados\Game\Managers\GangMemberManager;
 use Desperados\Game\ZombieTrait;
 
@@ -46,7 +47,7 @@ class Desperados extends Table {
      * @var PlayerManager
      */
     private $playerManager;
-    
+
     /**
      * 
      * @var GangMemberManager
@@ -84,9 +85,14 @@ class Desperados extends Table {
      */
 
     protected function setupNewGame($players, $options = array()) {
-        $this->getPlayerManager()->initNewGame($players, $options);
-        $this->gangMemberManager->initNewGame();
 
+        $this->playerManager->initNewGame($players, $options);
+        $this->gangMemberManager->initNewGame();
+        
+        Logger::log("TEST","TEST");
+
+//        $this->playerManager->drawGangs();
+//
         $this->activeNextPlayer();
     }
 
@@ -103,15 +109,13 @@ class Desperados extends Table {
     protected function getAllDatas() {
         $result = array();
 
+//        $this->gangMemberManager->drawGangs();
+        
         $current_player_id = self::getCurrentPlayerId();    // !! We must only return informations visible by this player !!
         // Get information about players
         // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
         $sql = "SELECT player_id id, player_score score FROM player ";
         $result['players'] = self::getCollectionFromDb($sql);
-        
-        
-
-        // TODO: Gather all information about current game situation (visible by player $current_player_id).
 
         return $result;
     }
@@ -195,6 +199,5 @@ class Desperados extends Table {
     public function getGangMemberManager(): GangMemberManager {
         return $this->gangMemberManager;
     }
-
 
 }

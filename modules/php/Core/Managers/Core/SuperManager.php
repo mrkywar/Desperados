@@ -109,7 +109,9 @@ abstract class SuperManager extends DBRequester {
     protected function update($items) {
         $qb = $this->prepareUpdate($items);
         
-        
+        return $qb;
+        //$queryString = QueryStatementFactory::create($qb);
+        //var_dump($queryString);die;
         
         
     }
