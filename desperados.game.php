@@ -1,6 +1,7 @@
 <?php
 
 use Core\Managers\PlayerManager;
+use Core\Logger\Logger;
 use Desperados\Game\Managers\GangMemberManager;
 use Desperados\Game\ZombieTrait;
 
@@ -87,6 +88,8 @@ class Desperados extends Table {
 
         $this->playerManager->initNewGame($players, $options);
         $this->gangMemberManager->initNewGame();
+        
+        Logger::log("TEST","TEST");
 
 //        $this->playerManager->drawGangs();
 //

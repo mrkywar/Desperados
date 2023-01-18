@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\Tools\Logger;
+namespace Core\Logger;
 
-use Linko\Managers\LogManager;
+use Core\Manager\LogManager;
 
 /**
  * Description of Logger
