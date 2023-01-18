@@ -38,7 +38,6 @@ CREATE TABLE IF NOT EXISTS `log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- Example 2: add a custom field to the standard "player" table
-ALTER TABLE `player` ADD `player_gang` varchar(50) NOT NULL DEFAULT '';
 
 CREATE TABLE IF NOT EXISTS `gangmember` (
   `member_id` int(10) unsigned NOT NULL AUTO_INCREMENT,

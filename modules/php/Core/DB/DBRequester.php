@@ -3,7 +3,7 @@
 namespace Core\DB;
 
 use Exception;
-use Core\Tools\Logger\Logger;
+use Core\Logger\Logger;
 
 /**
  * Description of DBRequester
@@ -30,8 +30,8 @@ class DBRequester extends \APP_DbObject {
         $qb->reset();
 
         if ($this->isDebug) {
-            //Logger::log($queryString, "DBRequest");
-            var_dump($queryString);die;
+            Logger::log($queryString, "DBRequest");
+            //var_dump($queryString);die;
         }
         try {
             switch ($qb->getQueryType()) {

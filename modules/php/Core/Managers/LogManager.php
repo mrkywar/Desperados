@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Manager;
+namespace Core\Managers;
 
 use Core\Managers\Core\SuperManager;
 use Core\Models\Log;

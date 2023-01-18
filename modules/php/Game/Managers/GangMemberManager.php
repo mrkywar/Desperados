@@ -2,7 +2,7 @@
 
 namespace Desperados\Game\Managers;
 
-use Core\Managers\Core\SuperManager;
+use Core\Manager\Core\SuperManager;
 use Core\Serializers\Serializer;
 use Desperados;
 use Desperados\Game\Factories\GangMemberFactory;

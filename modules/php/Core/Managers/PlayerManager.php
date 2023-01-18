@@ -23,8 +23,7 @@ class PlayerManager extends SuperManager {
         $defaultColors = $gameinfos['player_colors'];
         foreach ($players as &$player) {
             $color = array_shift($defaultColors);
-            $player->setColor($color)
-                    ->setGang("FORCED");
+            $player->setColor($color);
         }
         $this->setIsDebug(true);
         $this->create($players);
