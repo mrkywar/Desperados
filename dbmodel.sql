@@ -29,6 +29,13 @@
 --   PRIMARY KEY (`card_id`)
 -- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+CREATE TABLE IF NOT EXISTS `log` (
+    `log_id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `log_date` varchar(50) NOT NULL,
+    `log_category` varchar(50) NOT NULL,
+    `log_content` text NOT NULL,
+    PRIMARY KEY(`log_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 -- Example 2: add a custom field to the standard "player" table
 ALTER TABLE `player` ADD `player_gang` varchar(50) NOT NULL DEFAULT '';
