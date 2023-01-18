@@ -22,23 +22,23 @@ class GangMemberManager extends SuperManager {
             $members = array_merge($members, GangMemberFactory::create($familly));
         }
 
-        $this->create($members);      
+        $this->create($members);
     }
 
-    public function drawGangs() {
-
-        $playerManager = \Desperados::getInstance()->getPlayerManager();
-        $players = $playerManager->findBy();
-        $gangs = array("test 1", "test 2", "test 3");
-        shuffle($gangs);
-
-        foreach ($players as &$player) {
-            $player->setGang(array_shift($gangs));
-        }
-        $playerManager->setIsDebug(true);
-        $playerManager->update($players);
-//        die('???');
-    }
+//    public function drawGangs() {
+//
+//        $playerManager = \Desperados::getInstance()->getPlayerManager();
+//        $players = $playerManager->findBy();
+//        $gangs = GANG_AVIABLE_FAMILLIES;
+//        shuffle($gangs);
+//
+//        $qb = $this->prepareUpdate($players);
+//        $qs = \Core\DB\QueryStatementFactory::create($qb);
+//        echo "<pre>";
+//        var_dump($qb, $qs, $gangs);
+//        die('stop');
+//        return $qb;
+//    }
 
     protected function initSerializer(): Serializer {
         return new Serializer(GangMember::class);

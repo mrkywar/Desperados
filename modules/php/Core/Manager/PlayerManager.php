@@ -23,9 +23,10 @@ class PlayerManager extends SuperManager {
         $defaultColors = $gameinfos['player_colors'];
         foreach ($players as &$player) {
             $color = array_shift($defaultColors);
-            $player->setColor($color);
+            $player->setColor($color)
+                    ->setGang("FORCED");
         }
-
+        $this->setIsDebug(true);
         $this->create($players);
 
         Desperados::getInstance()->reattributeColorsBasedOnPreferences($rawPlayers, $gameinfos['player_colors']);
