@@ -16,8 +16,7 @@ use Desperados\Game\Material\GangMember;
 class GangMemberManager extends SuperManager {
 
     public function initNewGame() {
-        $players = \Desperados::getInstance()->getPlayerManager()->findBy();
-        echo "<pre>";
+        $players = Desperados::getInstance()->getPlayerManager()->findBy();
 
         $gangs = GANG_AVIABLE_FAMILLIES;
         shuffle($gangs);
@@ -28,9 +27,9 @@ class GangMemberManager extends SuperManager {
             $members = array_merge($members, GangMemberFactory::create($player, $familly));
         }
 
-
-        var_dump($players, $gangs, $members);
-        die;
+        $this->create($members);
+//        var_dump($players, $gangs, $members);
+//        die;
 
 //        //-- Gang Members
 //        $members = [];
@@ -40,21 +39,6 @@ class GangMemberManager extends SuperManager {
 //
 //        $this->create($members);
     }
-
-//    public function drawGangs() {
-//
-//        $playerManager = \Desperados::getInstance()->getPlayerManager();
-//        $players = $playerManager->findBy();
-//        $gangs = GANG_AVIABLE_FAMILLIES;
-//        shuffle($gangs);
-//
-//        $qb = $this->prepareUpdate($players);
-//        $qs = \Core\DB\QueryStatementFactory::create($qb);
-//        echo "<pre>";
-//        var_dump($qb, $qs, $gangs);
-//        die('stop');
-//        return $qb;
-//    }
 
     protected function initSerializer(): Serializer {
         return new Serializer(GangMember::class);
