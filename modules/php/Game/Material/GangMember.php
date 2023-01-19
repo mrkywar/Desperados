@@ -3,6 +3,8 @@
 namespace Desperados\Game\Material;
 
 use Core\Models\Core\Model;
+use Core\Models\Player;
+use Desperados;
 
 /**
  * Description of GangMember
@@ -44,9 +46,26 @@ class GangMember extends Model {
      */
     private $category;
 
+    /**
+     * 
+     * @var int
+     * @ORM\Column{"type":"int", "name":"member_position"}
+     */
+    private $position;
+
+    /**
+     * 
+     * @var int
+     * @ORM\Column{"type":"int", "name":"member_allocation"}
+     */
+    private $playerId;
+
     /* -------------------------------------------------------------------------
      *                  BEGIN - Getters & Setters 
      * ---------------------------------------------------------------------- */
+    public function __construct() {
+        $this->position = 0;
+    }
 
     public function getId(): ?int {
         return $this->id;
@@ -62,6 +81,14 @@ class GangMember extends Model {
 
     public function getCategory(): string {
         return $this->category;
+    }
+
+    public function getPosition(): int {
+        return $this->position;
+    }
+
+    public function getPlayerId(): int {
+        return $this->playerId;
     }
 
     public function setId(?int $id) {
@@ -82,6 +109,30 @@ class GangMember extends Model {
     public function setCategory(string $category) {
         $this->category = $category;
         return $this;
+    }
+
+    public function setPosition(int $position) {
+        $this->position = $position;
+        return $this;
+    }
+
+    public function setPlayerId(int $playerId) {
+        $this->playerId = $playerId;
+        return $this;
+    }
+
+    /* -------------------------------------------------------------------------
+     *                  BEGIN - Shortcut
+     * ---------------------------------------------------------------------- */
+
+    public function setPlayer(Player $player) {
+        return $this->setPlayerId($player->getId());
+    }
+
+    public function getPlayer(): Player {
+        return Desperados::getInstance()
+                        ->getPlayerManager()
+                        ->findBy(["id" => $this->getPlayerId()]);
     }
 
 }

@@ -16,13 +16,29 @@ use Desperados\Game\Material\GangMember;
 class GangMemberManager extends SuperManager {
 
     public function initNewGame() {
-        //-- Gang Members
+        $players = \Desperados::getInstance()->getPlayerManager()->findBy();
+        echo "<pre>";
+
+        $gangs = GANG_AVIABLE_FAMILLIES;
+        shuffle($gangs);
+
         $members = [];
-        foreach (GANG_AVIABLE_FAMILLIES as $familly) {
-            $members = array_merge($members, GangMemberFactory::create($familly));
+        foreach ($players as $player) {
+            $familly = array_shift($gangs);
+            $members = array_merge($members, GangMemberFactory::create($player, $familly));
         }
 
-        $this->create($members);
+
+        var_dump($players, $gangs, $members);
+        die;
+
+//        //-- Gang Members
+//        $members = [];
+//        foreach (GANG_AVIABLE_FAMILLIES as $familly) {
+//            $members = array_merge($members, GangMemberFactory::create($familly));
+//        }
+//
+//        $this->create($members);
     }
 
 //    public function drawGangs() {
