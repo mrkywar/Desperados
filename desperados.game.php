@@ -88,8 +88,6 @@ class Desperados extends Table {
 
         $this->playerManager->initNewGame($players, $options);
         $this->gangMemberManager->initNewGame();
-        
-        Logger::log("TEST","TEST");
 
 //        $this->playerManager->drawGangs();
 //
@@ -108,8 +106,6 @@ class Desperados extends Table {
 
     protected function getAllDatas() {
         $result = array();
-
-//        $this->gangMemberManager->drawGangs();
         
         $current_player_id = self::getCurrentPlayerId();    // !! We must only return informations visible by this player !!
         // Get information about players

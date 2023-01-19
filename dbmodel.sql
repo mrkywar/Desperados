@@ -45,5 +45,7 @@ CREATE TABLE IF NOT EXISTS `gangmember` (
   --`member_name` varchar(50) NOT NULL,
   `member_difficulty` int(2) NOT NULL, 
   `member_category` varchar(50) NOT NULL, 
+  `member_position` int(2) NOT NULL, 
+  `member_allocation`int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
