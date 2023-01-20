@@ -48,4 +48,13 @@ CREATE TABLE IF NOT EXISTS `gangmember` (
   `member_position` int(2) NOT NULL, 
   `member_allocation`int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+
+CREATE TABLE IF NOT EXISTS `dice` (
+    `dice_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `dice_position` varchar(50),
+    `dice_position_arg` varchar(50),
+    `dice_actual_face` int(2),
+    PRIMARY KEY (`dice_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
