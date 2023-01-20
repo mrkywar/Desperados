@@ -2,6 +2,7 @@
 
 namespace Desperados\Game\Managers;
 
+use Core\Models\Player;
 use Desperados;
 
 /**
@@ -11,13 +12,27 @@ use Desperados;
  */
 class StatsManager {
 
+    private $game;
+
+    public function __construct() {
+        $this->game = Desperados::getInstance();
+    }
+
     public function initNewGame() {
-        $game = Desperados::getInstance();
-        $players = $game->getPlayerManager()->findBy();
+        $players = $this->game->getPlayerManager()->findBy();
 
         foreach ($players as $player) {
-            $game->setStat(1, "turns_number", $player->getId()); //setStat( $value, $name, $player_id = null )
+            $this->initPlayerStat("turns_number", $player);
         }
+    }
+
+    public function initPlayerStat(string $statName, Player $player) {
+        return $this->setPlayerStat($statName, $player, 1);
+    }
+
+    public function setPlayerStat(string $statName, Player $player, $value = 0) {
+        $this->game->setStat($value, $statName, $player->getId());
+        return $this;
     }
 
 }
