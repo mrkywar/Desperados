@@ -1,8 +1,7 @@
 <?php
-
 namespace Core\Logger;
 
-use Core\Manager\LogManager;
+use Core\Managers\LogManager;
 
 /**
  * Description of Logger

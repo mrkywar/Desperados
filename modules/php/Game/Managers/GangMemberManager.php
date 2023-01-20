@@ -2,7 +2,7 @@
 
 namespace Desperados\Game\Managers;
 
-use Core\Manager\Core\SuperManager;
+use Core\Managers\Core\SuperManager;
 use Core\Serializers\Serializer;
 use Desperados;
 use Desperados\Game\Factories\GangMemberFactory;
@@ -30,7 +30,6 @@ class GangMemberManager extends SuperManager {
         $this->create($members);
 //        var_dump($players, $gangs, $members);
 //        die;
-
 //        //-- Gang Members
 //        $members = [];
 //        foreach (GANG_AVIABLE_FAMILLIES as $familly) {
