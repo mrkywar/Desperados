@@ -1,7 +1,7 @@
 <?php
 
 use Core\Managers\PlayerManager;
-use Core\Logger\Logger;
+use Desperados\Game\Managers\DiceManager;
 use Desperados\Game\Managers\GangMemberManager;
 use Desperados\Game\ZombieTrait;
 
@@ -54,6 +54,12 @@ class Desperados extends Table {
      */
     private $gangMemberManager;
 
+    /**
+     * 
+     * @var DiceManager
+     */
+    private $diceManager;
+
     public function __construct() {
         parent::__construct();
 
@@ -61,6 +67,7 @@ class Desperados extends Table {
 
         $this->playerManager = new PlayerManager();
         $this->gangMemberManager = new GangMemberManager();
+        $this->diceManager = new DiceManager();
 
         self::initGameStateLabels(array(
                 //    "my_first_global_variable" => 10,
@@ -106,7 +113,11 @@ class Desperados extends Table {
 
     protected function getAllDatas() {
         $result = array();
-        
+
+//        echo "<pre>";
+//        var_dump(DiceFactory::create(), DiceFactory::create());die;
+        $this->diceManager->initNewPlayerTurn();
+
         $current_player_id = self::getCurrentPlayerId();    // !! We must only return informations visible by this player !!
         // Get information about players
         // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.

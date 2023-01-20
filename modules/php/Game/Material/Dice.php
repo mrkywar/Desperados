@@ -22,15 +22,15 @@ class Dice extends Model {
 
     /**
      * 
-     * @var string
-     * @ORM\Column{"type":"string", "name":"dice_postion", "default":0}
+     * @var string|null
+     * @ORM\Column{"type":"string", "name":"dice_position","default":"null"}
      */
     private $position;
 
     /**
      * 
-     * @var string
-     * @ORM\Column{"type":"string", "name":"dice_postion_arg"}
+     * @var string|null
+     * @ORM\Column{"type":"string", "name":"dice_position_arg","default":"null"}
      */
     private $positionArg;
 
@@ -57,11 +57,11 @@ class Dice extends Model {
         return $this->id;
     }
 
-    public function getPosition(): string {
+    public function getPosition(): ?string {
         return $this->position;
     }
 
-    public function getPositionArg(): string {
+    public function getPositionArg(): ?string {
         return $this->positionArg;
     }
 
@@ -74,12 +74,12 @@ class Dice extends Model {
         return $this;
     }
 
-    public function setPosition(string $position) {
+    public function setPosition(?string $position) {
         $this->position = $position;
         return $this;
     }
 
-    public function setPositionArg(string $positionArg) {
+    public function setPositionArg(?string $positionArg) {
         $this->positionArg = $positionArg;
         return $this;
     }
