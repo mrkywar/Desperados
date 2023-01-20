@@ -3,6 +3,7 @@
 use Core\Managers\PlayerManager;
 use Desperados\Game\Managers\DiceManager;
 use Desperados\Game\Managers\GangMemberManager;
+use Desperados\Game\Managers\StatsManager;
 use Desperados\Game\ZombieTrait;
 
 $swdNamespaceAutoload = function ($class) {
@@ -50,6 +51,12 @@ class Desperados extends Table {
 
     /**
      * 
+     * @var StatsManager;
+     */
+    private $statsManager;
+
+    /**
+     * 
      * @var GangMemberManager
      */
     private $gangMemberManager;
@@ -66,6 +73,7 @@ class Desperados extends Table {
         self::$instance = $this;
 
         $this->playerManager = new PlayerManager();
+        $this->statsManager = new StatsManager();
         $this->gangMemberManager = new GangMemberManager();
         $this->diceManager = new DiceManager();
 
@@ -94,6 +102,7 @@ class Desperados extends Table {
     protected function setupNewGame($players, $options = array()) {
 
         $this->playerManager->initNewGame($players, $options);
+        $this->statsManager->initNewGame();
         $this->gangMemberManager->initNewGame();
 
 //        $this->playerManager->drawGangs();
@@ -117,6 +126,9 @@ class Desperados extends Table {
 //        echo "<pre>";
 //        var_dump(DiceFactory::create(), DiceFactory::create());die;
         $this->diceManager->initNewPlayerTurn();
+        $act = $this->getStat("turns_number", self::getCurrentPlayerId());
+        var_dump($act);
+//        die;
 
         $current_player_id = self::getCurrentPlayerId();    // !! We must only return informations visible by this player !!
         // Get information about players
@@ -205,6 +217,22 @@ class Desperados extends Table {
      */
     public function getGangMemberManager(): GangMemberManager {
         return $this->gangMemberManager;
+    }
+
+    /**
+     * 
+     * @return StatsManager
+     */
+    public function getStatsManager(): StatsManager {
+        return $this->statsManager;
+    }
+
+    /**
+     * 
+     * @return DiceManager
+     */
+    public function getDiceManager(): DiceManager {
+        return $this->diceManager;
     }
 
 }
