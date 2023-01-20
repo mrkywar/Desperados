@@ -126,8 +126,9 @@ class Desperados extends Table {
 //        echo "<pre>";
 //        var_dump(DiceFactory::create(), DiceFactory::create());die;
         $this->diceManager->initNewPlayerTurn();
-        $act = $this->getStat("turns_number", self::getCurrentPlayerId());
-        var_dump($act);
+        $ptn = $this->getStat("player_turns_number", self::getCurrentPlayerId());
+        $ttn = $this->getStat("table_turns_number");
+        var_dump($ptn,$ttn);
 //        die;
 
         $current_player_id = self::getCurrentPlayerId();    // !! We must only return informations visible by this player !!
