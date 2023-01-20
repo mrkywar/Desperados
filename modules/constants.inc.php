@@ -36,3 +36,17 @@ define("GANG_DIFFICULTY_MEMBERS", array(
     GANG_MEMBER_4_CATEGORY => 5,
     GANG_MEMBER_5_CATEGORY => 6
 ));
+
+
+/* -------------------------------------------------------------------------
+ *                  BEGIN - DICE
+ * ---------------------------------------------------------------------- */
+define("DICE_NUMBER", 4);
+define("DICE_FACES", array(
+    1 => "The Cheat",
+    2 => "The Bully",
+    3 => "The Ugly",
+    4 => "The Bad Girl",
+    5 => "The Boss",
+    6 => "Action"
+));
