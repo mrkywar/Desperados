@@ -7,6 +7,7 @@ use Core\Models\Player;
 use Core\Serializers\Serializer;
 use Desperados\Game\Factories\DiceFactory;
 use Desperados\Game\Material\Dice;
+use const DICE_NUMBER;
 
 /**
  * Description of DiceManager
@@ -14,17 +15,15 @@ use Desperados\Game\Material\Dice;
  * @author Mr_Kywar mr_kywar@gmail.com
  */
 class DiceManager extends SuperManager {
-    
-    
-    
-    public function initNewPlayerTurn(){
+
+    public function initNewPlayerTurn(Player $player) {
         $dices = [];
-        for ($i=0; $i< DICE_NUMBER; $i++){
-            $dices[] = DiceFactory::create();
+        for ($i = 0; $i < DICE_NUMBER; $i++) {
+            $dices[] = DiceFactory::create($player);
         }
-        
+
         $this->create($dices);
-        
+
 //        $diceThrow = new DiceThrow();Player $player
 //        $diceThrow->setPlayer($player)
 //                ->setLunches(1)
@@ -37,7 +36,6 @@ class DiceManager extends SuperManager {
 //        
 //        $this->create($diceThrow);
     }
-
 
     protected function initSerializer(): Serializer {
         return new Serializer(Dice::class);

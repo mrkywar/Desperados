@@ -1,6 +1,7 @@
 <?php
 
 use Core\Managers\PlayerManager;
+use Desperados\Game\GameTools\GameSetup;
 use Desperados\Game\Managers\DiceManager;
 use Desperados\Game\Managers\GangMemberManager;
 use Desperados\Game\Managers\StatsManager;
@@ -98,9 +99,14 @@ class Desperados extends Table {
 
     protected function setupNewGame($players, $options = array()) {
 
-        $this->playerManager->initNewGame($players, $options);
-        $this->statsManager->initNewGame();
-        $this->gangMemberManager->initNewGame();
+//        $this->playerManager->initNewGame($players, $options);
+//        $this->statsManager->initNewGame();
+//        $this->gangMemberManager->initNewGame();
+        
+        $gameSetup = new GameSetup($this);
+        $gameSetup->setup($players, $options);
+        
+        
 
 //        $this->playerManager->drawGangs();
 //
@@ -120,10 +126,10 @@ class Desperados extends Table {
     protected function getAllDatas() {
         $result = array();
 
-        $this->diceManager->initNewPlayerTurn();
-        $ptn = $this->getStat("player_turns_number", self::getCurrentPlayerId());
-        $ttn = $this->getStat("table_turns_number");
-//        var_dump($ptn, $ttn);
+//        $this->diceManager->initNewPlayerTurn();
+//        $ptn = $this->getStat("player_turns_number", self::getCurrentPlayerId());
+//        $ttn = $this->getStat("table_turns_number");
+////        var_dump($ptn, $ttn);
 
         $current_player_id = self::getCurrentPlayerId();    // !! We must only return informations visible by this player !!
         // Get information about players
