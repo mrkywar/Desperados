@@ -37,8 +37,10 @@ class Serializer {
      * @param array<Model>|Model $items Model(s) to transform
      * @return array
      */
-    public function serialize($items) {
-        $fields = DBFieldsRetriver::retrive($items);
+    public function serialize($items, array $fields = null) {
+        if (null === $fields) {
+            $fields = DBFieldsRetriver::retrive($items);
+        }
 
         if (is_array($items)) {
             $results = [];
@@ -76,7 +78,7 @@ class Serializer {
         } elseif (!is_array($rawItems)) {
             throw new SerializerException("Array expected");
         }
-        $fields = DBFieldsRetriver::retrive(new $classModel());
+        $fields = DBFieldsRetriver::retrive($classModel);
 
         if (1 === sizeof($rawItems) && !$this->isForcedArray) {
             return $this->unserializeOnce($rawItems[array_keys($rawItems)[0]], $fields);
@@ -95,14 +97,23 @@ class Serializer {
     }
 
     /**
+     * 
+     * @param type $rawItem
+     * @return Model
+     */
+    protected function generateNewModel($rawItem): Model {
+        $modelStr = $this->classModel;
+        return new $modelStr();
+    }
+
+    /**
      * Allow you Data To Object transform
      * @param array $rawItem : Raw item to transform
      * @param array<DBField> $fields : Field to use for unserialization
      * @return Model
      */
     private function unserializeOnce($rawItem, $fields) {
-        $modelStr = $this->classModel;
-        $model = new $modelStr();
+        $model = $this->generateNewModel($rawItem);
 
         foreach ($fields as $field) {
             if (isset($rawItem[$field->getDbName()])) {
@@ -121,6 +132,9 @@ class Serializer {
                 return \DateTime::createFromFormat(DBField::DATETIME_STRING_FORMAT, $value);
             case DBField::BOOLEAN_FORMAT:
                 return 1 === $value;
+            case DBField::JSON_FORMAT:
+//                var_dump($value,json_decode($value));
+                return json_decode($value, true);
             default:
                 return $value;
         }

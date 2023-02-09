@@ -72,6 +72,7 @@ abstract class QueryStatementFactory {
         if (null !== $qb->getLimit()) {
             $statement .= " LIMIT " . $qb->getLimit();
         }
+        $statement .= ";";
     }
 
     /**
@@ -114,13 +115,14 @@ abstract class QueryStatementFactory {
     private static function createUpdateQuery(QueryBuilder $qb, &$statement) {
         $statement .= QueryString::TYPE_UPDATE;
         $statement .= " `" . $qb->getTableName() . "` ";
-
+        
         //-- Setter
         $statement .= " SET ";
         $statement .= implode(",", $qb->getSetters());
 
         //-- Clauses
         $statement .= self::generateClauses($qb);
+        $statement .= ";";
     }
 
     /* -------------------------------------------------------------------------
@@ -173,7 +175,7 @@ abstract class QueryStatementFactory {
 
         if (is_array($values)) {
             $serializer = new Serializer(get_class($values[0]));
-            $serializedValues = $serializer->serialize($values);
+            $serializedValues = $serializer->serialize($values, $fields);
             foreach ($serializedValues as $rawValue) {
                 $rawValues [] = self::createOneValue($rawValue, $fields);
             }
@@ -192,7 +194,7 @@ abstract class QueryStatementFactory {
 //                $cleanedValues[$field->getDBName()] = DBValueTransformer::transform($field, $rawValue[$field->getDBName()]);
                 $cleanedValues[] = DBValueTransformer::transform($field, $rawValue[$field->getDBName()]);
             } else {
-                $cleanedValues[] = $field->getDefault();
+                $cleanedValues[] = DBValueTransformer::transform($field, $field->getDefault());
             }
         }
         return "(" . implode(",", $cleanedValues) . ")";

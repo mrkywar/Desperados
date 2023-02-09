@@ -2,10 +2,9 @@
 
 namespace Core\DB\Fields;
 
-use Core\Models\Core\Model;
-use Core\Models\Player;
 use Core\DB\Exceptions\DBFieldsRetriverException;
 use Core\DB\QueryString;
+use Core\Models\Core\Model;
 use ReflectionClass;
 use ReflectionProperty;
 
@@ -18,32 +17,41 @@ abstract class DBFieldsRetriver {
 
     static public function retrive($item) {
         if (is_array($item)) {
-            if(empty($item)){
+            if (empty($item)) {
                 return;
             }
             return self::retrive($item[array_keys($item)[0]]); //recursive call shoud called with first item in array<Model> parameter
         } elseif ($item instanceof Model) {
             $allField = self::retriveFields($item);
             return $allField;
+        } elseif (is_string($item)) {
+            return self::retriveFields($item);
         } else {
-            var_dump($item, $item instanceof Player);
+            var_dump($item);
             throw new DBFieldsRetriverException("Unsupported call for : " . $item . " - ERROR CODE : DBFR-01");
         }
     }
 
-    static private function retriveFields($classModel) {
+    static public function retriveFields($classModel) {
         $reflexion = new ReflectionClass($classModel);
         $fields = [];
+//        var_dump(self::EXCLUDE_PROPERTY, $reflexion->getProperties());
         foreach ($reflexion->getProperties() as $property) {
             //-- Retrive property first
             $obj = self::getColumDeclaration($property);
             $field = new DBField();
+            if (!is_object($obj)) {
+                continue;
+//                echo '<pre>';
+//                var_dump($obj,$property);die;
+            }
             $field->setDbName($obj->name)
                     ->setType($obj->type)
                     ->setProperty($property->getName())
                     ->setIsPrimary(self::isIdDeclaration($property)); //-- Retrive Id status
 
             $excludeProperty = self::EXCLUDE_PROPERTY;
+
             if (property_exists($obj, $excludeProperty)) {
                 $field->setExclusions($obj->$excludeProperty);
             }
@@ -69,6 +77,11 @@ abstract class DBFieldsRetriver {
         return self::retriveFilteredFields($items, QueryString::TYPE_INSERT);
     }
 
+    static public function retriveInsertFieldsFormClassName($className) {
+        $fields = self::retriveFields($className);
+        return DBFiledsFilter::filter($fields, QueryString::TYPE_INSERT);
+    }
+
     static public function retriveSelectFields($items) {
         return self::retriveFilteredFields($items, QueryString::TYPE_SELECT);
     }
@@ -83,7 +96,7 @@ abstract class DBFieldsRetriver {
         }
         return $fielteredFields;
     }
-    
+
     static public function retriveUpdatableFields($items) {
         $fields = self::retrive($items);
         $fielteredFields = [];
@@ -94,17 +107,18 @@ abstract class DBFieldsRetriver {
         }
         return $fielteredFields;
     }
-    
+
     static public function retriveFieldByPropertyName(string $propertyName, $items) {
         $fields = self::retrive($items);
-        foreach ($fields as $field){
-            if($field->getProperty() === $propertyName ){
+        foreach ($fields as $field) {
+            if ($field->getProperty() === $propertyName) {
                 return $field;
             }
         }
-        
+
         throw new DBFieldsRetriverException("Property Name '$propertyName' missing - ERROR CODE : DBFR-02");
     }
+
     /* -------------------------------------------------------------------------
      *                  BEGIN - Primary Tools
      * ---------------------------------------------------------------------- */
