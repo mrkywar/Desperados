@@ -3,6 +3,7 @@
 use Core\Managers\PlayerManager;
 use Desperados\Game\Managers\DiceManager;
 use Desperados\Game\Managers\GangMemberManager;
+use Desperados\Game\Managers\StatsManager;
 use Desperados\Game\ZombieTrait;
 
 $swdNamespaceAutoload = function ($class) {
@@ -10,7 +11,6 @@ $swdNamespaceAutoload = function ($class) {
 
     if ($classParts[0] == 'Desperados') {
         array_shift($classParts);
-        //var_dump(dirname(__FILE__) . '/modules/php/' . implode(DIRECTORY_SEPARATOR, $classParts) . '.php');die;
         $file = dirname(__FILE__) . '/modules/php/' . implode(DIRECTORY_SEPARATOR, $classParts) . '.php';
         if (file_exists($file)) {
             require_once $file;
@@ -19,8 +19,6 @@ $swdNamespaceAutoload = function ($class) {
         }
     } elseif ($classParts[0] == 'Core') {
         array_shift($classParts);
-
-        //var_dump(dirname(__FILE__) . '/modules/php/Core/' . implode(DIRECTORY_SEPARATOR, $classParts) . '.php');die;
         $file = dirname(__FILE__) . '/modules/php/Core/' . implode(DIRECTORY_SEPARATOR, $classParts) . '.php';
         if (file_exists($file)) {
             require_once $file;
@@ -50,6 +48,12 @@ class Desperados extends Table {
 
     /**
      * 
+     * @var StatsManager;
+     */
+    private $statsManager;
+
+    /**
+     * 
      * @var GangMemberManager
      */
     private $gangMemberManager;
@@ -66,6 +70,7 @@ class Desperados extends Table {
         self::$instance = $this;
 
         $this->playerManager = new PlayerManager();
+        $this->statsManager = new StatsManager();
         $this->gangMemberManager = new GangMemberManager();
         $this->diceManager = new DiceManager();
 
@@ -94,6 +99,7 @@ class Desperados extends Table {
     protected function setupNewGame($players, $options = array()) {
 
         $this->playerManager->initNewGame($players, $options);
+        $this->statsManager->initNewGame();
         $this->gangMemberManager->initNewGame();
 
 //        $this->playerManager->drawGangs();
@@ -114,9 +120,10 @@ class Desperados extends Table {
     protected function getAllDatas() {
         $result = array();
 
-//        echo "<pre>";
-//        var_dump(DiceFactory::create(), DiceFactory::create());die;
         $this->diceManager->initNewPlayerTurn();
+        $ptn = $this->getStat("player_turns_number", self::getCurrentPlayerId());
+        $ttn = $this->getStat("table_turns_number");
+//        var_dump($ptn, $ttn);
 
         $current_player_id = self::getCurrentPlayerId();    // !! We must only return informations visible by this player !!
         // Get information about players
@@ -205,6 +212,22 @@ class Desperados extends Table {
      */
     public function getGangMemberManager(): GangMemberManager {
         return $this->gangMemberManager;
+    }
+
+    /**
+     * 
+     * @return StatsManager
+     */
+    public function getStatsManager(): StatsManager {
+        return $this->statsManager;
+    }
+
+    /**
+     * 
+     * @return DiceManager
+     */
+    public function getDiceManager(): DiceManager {
+        return $this->diceManager;
     }
 
 }
