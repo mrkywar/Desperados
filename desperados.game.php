@@ -11,7 +11,6 @@ $swdNamespaceAutoload = function ($class) {
 
     if ($classParts[0] == 'Desperados') {
         array_shift($classParts);
-        //var_dump(dirname(__FILE__) . '/modules/php/' . implode(DIRECTORY_SEPARATOR, $classParts) . '.php');die;
         $file = dirname(__FILE__) . '/modules/php/' . implode(DIRECTORY_SEPARATOR, $classParts) . '.php';
         if (file_exists($file)) {
             require_once $file;
@@ -20,8 +19,6 @@ $swdNamespaceAutoload = function ($class) {
         }
     } elseif ($classParts[0] == 'Core') {
         array_shift($classParts);
-
-        //var_dump(dirname(__FILE__) . '/modules/php/Core/' . implode(DIRECTORY_SEPARATOR, $classParts) . '.php');die;
         $file = dirname(__FILE__) . '/modules/php/Core/' . implode(DIRECTORY_SEPARATOR, $classParts) . '.php';
         if (file_exists($file)) {
             require_once $file;
@@ -123,13 +120,10 @@ class Desperados extends Table {
     protected function getAllDatas() {
         $result = array();
 
-//        echo "<pre>";
-//        var_dump(DiceFactory::create(), DiceFactory::create());die;
         $this->diceManager->initNewPlayerTurn();
         $ptn = $this->getStat("player_turns_number", self::getCurrentPlayerId());
         $ttn = $this->getStat("table_turns_number");
-        var_dump($ptn,$ttn);
-//        die;
+//        var_dump($ptn, $ttn);
 
         $current_player_id = self::getCurrentPlayerId();    // !! We must only return informations visible by this player !!
         // Get information about players
