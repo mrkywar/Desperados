@@ -39,8 +39,14 @@ class StatsManager {
      * @return type
      */
     public function initPlayerStat(string $statName, Player $player) {
-        return $this->setPlayerStat($statName, $player, 1);
+        return $this->setPlayerStat($statName, $player->getId(), 1);
     }
+
+    public function getPlayerStat(string $statName, Player $player) {
+        return $this->game->getStat($statName, $player->getId());
+       // 
+    }
+
 
     /**
      * 

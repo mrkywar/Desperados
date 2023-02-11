@@ -1,4 +1,5 @@
 <?php
+
 namespace Core\Managers\Core;
 
 use Core\DB\DBRequester;
@@ -8,6 +9,7 @@ use Core\DB\Fields\DBFieldsRetriver;
 use Core\DB\QueryBuilder;
 use Core\Models\Core\Model;
 use Core\Serializers\Serializer;
+use ReflectionClass;
 
 /**
  * Description of SuperManager
@@ -21,6 +23,12 @@ abstract class SuperManager extends DBRequester {
      * @var Serializer
      */
     private $serializer;
+
+    /**
+     * 
+     * @var bool
+     */
+    private $useSerializerClass = false;
 
     /* -------------------------------------------------------------------------
      *                  BEGIN - SERIALIZER
@@ -36,6 +44,15 @@ abstract class SuperManager extends DBRequester {
         return $this->serializer;
     }
 
+    public function setUseSerializerClass(bool $useSerializerClass) {
+        $this->useSerializerClass = $useSerializerClass;
+        return $this;
+    }
+
+    public function getUseSerializerClass(): bool {
+        return $this->useSerializerClass;
+    }
+
     /**
      * @return Serializer
      */
@@ -48,25 +65,35 @@ abstract class SuperManager extends DBRequester {
     final private function getItems($items = null) {
         if (null === $items) {
             $className = $this->getSerializer()->getClassModel();
-            $items = new $className();
+            $reflection = new ReflectionClass($className);
+
+            if (!$reflection->isAbstract()) {
+                return new $className();
+            } else {
+                throw new SuperManagerException("Unsuported call for " . get_class($items) . " - ERROR code : SM-02 ");
+            }
         }
-        return $items;
     }
 
     final protected function getInsertFields($items) {
+        if (true === $this->getUseSerializerClass()) {
+            return DBFieldsRetriver::retriveInsertFieldsFormClassName($this->getSerializer()->getClassModel());
+        }
         return DBFieldsRetriver::retriveInsertFields($items);
     }
 
     final protected function getSelectFields() {
-        return DBFieldsRetriver::retriveSelectFields($this->getItems());
+//        var_dump(DBFieldsRetriver::retrive($this->getSerializer()->getClassModel()));
+//        die('Sel');
+        return DBFieldsRetriver::retriveSelectFields($this->getSerializer()->getClassModel());
     }
 
     final protected function getPrimaryFields($items) {
         return DBFieldsRetriver::retrivePrimaryFields($items);
     }
-    
-    final protected function getUpdateFields() {
-        return DBFieldsRetriver::retriveUpdatableFields($this->getItems());
+
+    final protected function getUpdateFields($items) {
+        return DBFieldsRetriver::retriveUpdatableFields($items);
     }
 
     final protected function getFieldByProperty(string $propertyName, $items = null) {
@@ -80,7 +107,10 @@ abstract class SuperManager extends DBRequester {
     final protected function getTable($items = null) {
         if (null === $items) {
             $className = $this->getSerializer()->getClassModel();
-            $items = new $className();
+            return DBTableRetriver::retriveFromClassName($className);
+
+//            var_dump($className);die;
+//            $items = new $className();
         }
         return DBTableRetriver::retrive($items);
     }
@@ -107,13 +137,30 @@ abstract class SuperManager extends DBRequester {
     }
 
     protected function update($items) {
-        $qb = $this->prepareUpdate($items);
-        
-        return $qb;
-        //$queryString = QueryStatementFactory::create($qb);
-        //var_dump($queryString);die;
-        
-        
+        if ($items instanceof Model) {
+            $table = $this->getTable($items);
+            $primaries = $this->getPrimaryFields($items);
+            $udpatables = $this->getUpdateFields($items);
+
+            $qb = new QueryBuilder();
+            $qb->update()
+                    ->setTable($table);
+            foreach ($udpatables as $udpatable) {
+                $qb->addSetter($udpatable, DBValueRetriver::retrive($udpatable, $items));
+            }
+            foreach ($primaries as $primary) {
+                $qb->addClause($primary, DBValueRetriver::retrive($primary, $items));
+            }
+
+            $this->execute($qb);
+        } elseif (is_array($items)) {
+            foreach ($items as $item) {
+                $this->update($item);
+            }
+        } else {
+            throw new SuperManagerException("Unsuported Update call for " . get_class($items) . " - ERROR code : SM-01 ");
+        }
+        return $this;
     }
 
     /**
@@ -122,7 +169,7 @@ abstract class SuperManager extends DBRequester {
      * @param type $limit
      * @return QueryBuilder
      */
-    protected function prepareFindBy($clauses = [], $limit = null) {
+    protected function prepareFindBy($clauses = [], $limit = null, $orderBy = []) {
         $fields = $this->getSelectFields();
         $table = $this->getTable();
 
@@ -148,6 +195,7 @@ abstract class SuperManager extends DBRequester {
     protected function prepareUpdate($items = null) {
         $table = $this->getTable($items);
         $primaries = $this->getPrimaryFields($items);
+//        $udpatables = $this->getUpdateFields($items);
 
         $qb = new QueryBuilder();
         $qb->update()
@@ -156,12 +204,12 @@ abstract class SuperManager extends DBRequester {
         foreach ($primaries as $primary) {
             $qb->addClause($primary, DBValueRetriver::retrive($primary, $items));
         }
-        
+
         return $qb;
     }
 
-    public function findBy($clauses = [], $limit = null) {
-        $qb = $this->prepareFindBy($clauses, $limit);
+    public function findBy($clauses = [], $limit = null, $orderBy = []) {
+        $qb = $this->prepareFindBy($clauses, $limit, $orderBy);
         $rawResults = $this->execute($qb);
         return $this->getSerializer()->unserialize($rawResults);
     }

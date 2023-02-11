@@ -2,6 +2,7 @@
 
 namespace Desperados\Game\GameTools;
 
+use Core\DB\Fields\DBFieldsRetriver;
 use Core\Managers\PlayerManager;
 use Desperados;
 use Desperados\Game\Managers\GangMemberManager;
@@ -42,6 +43,15 @@ class GameSetup {
         $this->playerManager->initNewGame($rawPlayers, $options);
         $this->statsManager->initNewGame();
         $this->gangMemberManager->initNewGame();
+
+        $players = $this->playerManager->findBy(
+                [],
+                null,
+                [DBFieldsRetriver::retriveFieldByPropertyName("no", $players)] //order by
+        );
+        echo '<pre>';
+        var_dump($players);
+        die;
     }
 
 }
