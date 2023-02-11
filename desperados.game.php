@@ -2,7 +2,6 @@
 
 use Core\Managers\PlayerManager;
 use Desperados\Game\GameTools\GameSetup;
-use Desperados\Game\Managers\DiceManager;
 use Desperados\Game\Managers\GangMemberManager;
 use Desperados\Game\Managers\StatsManager;
 use Desperados\Game\Turn\TurnManager;
@@ -66,11 +65,6 @@ class Desperados extends Table {
      */
     private $turnManager;
 
-    /**
-     * 
-     * @var DiceManager
-     */
-    private $diceManager;
 
     public function __construct() {
         parent::__construct();
@@ -80,7 +74,6 @@ class Desperados extends Table {
         $this->playerManager = new PlayerManager();
         $this->statsManager = new StatsManager();
         $this->gangMemberManager = new GangMemberManager();
-        $this->diceManager = new DiceManager();
         $this->turnManager = new TurnManager();
 
         self::initGameStateLabels(array(
@@ -232,14 +225,6 @@ class Desperados extends Table {
      */
     public function getStatsManager(): StatsManager {
         return $this->statsManager;
-    }
-
-    /**
-     * 
-     * @return DiceManager
-     */
-    public function getDiceManager(): DiceManager {
-        return $this->diceManager;
     }
 
     /**

@@ -48,30 +48,30 @@ class Turn extends Model {
     /**
      * 
      * @var int
-     * @ORM\Column{"type":"integer", "name":"turn_dice_1_id"}
+     * @ORM\Column{"type":"integer", "name":"turn_dice_1_face"}
      */
-    private $dice1Id;
+    private $dice1Face;
 
     /**
      * 
      * @var int
-     * @ORM\Column{"type":"integer", "name":"turn_dice_2_id"}
+     * @ORM\Column{"type":"integer", "name":"turn_dice_2_face"}
      */
-    private $dice2Id;
+    private $dice2Face;
 
     /**
      * 
      * @var int
-     * @ORM\Column{"type":"integer", "name":"turn_dice_3_id"}
+     * @ORM\Column{"type":"integer", "name":"turn_dice_3_face"}
      */
-    private $dice3Id;
+    private $dice3Face;
 
     /**
      * 
      * @var int
-     * @ORM\Column{"type":"integer", "name":"turn_dice_4_id"}
+     * @ORM\Column{"type":"integer", "name":"turn_dice_4_face"}
      */
-    private $dice4Id;
+    private $dice4Face;
 
     /* -------------------------------------------------------------------------
      *                  BEGIN - Constructor 
@@ -121,24 +121,40 @@ class Turn extends Model {
         return $this->rollCount;
     }
 
-    public function getDice1Id(): int {
-        return $this->dice1Id;
+    public function getDice1Face(): int {
+        return $this->dice1Face;
     }
 
-    public function getDice2Id(): int {
-        return $this->dice2Id;
+    public function getDice2Face(): int {
+        return $this->dice2Face;
     }
 
-    public function getDice3Id(): int {
-        return $this->dice3Id;
+    public function getDice3Face(): int {
+        return $this->dice3Face;
     }
 
-    public function getDice4Id(): int {
-        return $this->dice4Id;
+    public function getDice4Face(): int {
+        return $this->dice4Face;
     }
 
-    public function getDiceManager(): DiceManager {
-        return $this->diceManager;
+    public function setDice1Face(int $dice1Face) {
+        $this->dice1Face = $dice1Face;
+        return $this;
+    }
+
+    public function setDice2Face(int $dice2Face) {
+        $this->dice2Face = $dice2Face;
+        return $this;
+    }
+
+    public function setDice3Face(int $dice3Face) {
+        $this->dice3Face = $dice3Face;
+        return $this;
+    }
+
+    public function setDice4Face(int $dice4Face) {
+        $this->dice4Face = $dice4Face;
+        return $this;
     }
 
     /* -------------------------------------------------------------------------
@@ -156,14 +172,14 @@ class Turn extends Model {
     }
 
     public function addDice(Desperados\Game\Material\Dice $dice) {
-        if (null === $this->dice1Id) {
-            $this->dice1Id = $dice->getId();
-        } elseif (null === $this->dice2Id) {
-            $this->dice2Id = $dice->getId();
-        } elseif (null === $this->dice3Id) {
-            $this->dice3Id = $dice->getId();
-        } elseif (null === $this->dice4Id) {
-            $this->dice4Id = $dice->getId();
+        if (null === $this->dice1Face) {
+            $this->dice1Face = $dice->getActualFace();
+        } elseif (null === $this->dice2Face) {
+            $this->dice2Face = $dice->getActualFace();
+        } elseif (null === $this->dice3Face) {
+            $this->dice3Face = $dice->getActualFace();
+        } elseif (null === $this->dice4Face) {
+            $this->dice4Face = $dice->getActualFace();
         } else {
             throw new TurnException("TE-01 : Only 4 dice for a turn");
         }

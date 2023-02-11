@@ -16,16 +16,15 @@ use const DICE_NUMBER;
 abstract class TurnFactory {
 
     static public function create(Player $player) {
-        $diceManager = Desperados::getInstance()->getDiceManager();
         $statManager = Desperados::getInstance()->getStatsManager();
 
         $turn = new Turn();
         $turn->setPlayerId($player->getId())
                 ->setNumber($statManager->getPlayerStat("player_turns_number", $player));
 
-        $dices = $diceManager->initNewRound();
-        foreach ($dices as $dice) {
-            $turn->addDice($dice);
+       
+        for ($i=0; $i<DICE_NUMBER; $i++) {
+            $turn->addDice(new Dice());
         }
 
         return $turn;
