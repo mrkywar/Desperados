@@ -2,11 +2,12 @@
 
 namespace Desperados\Game\GameTools;
 
-use Core\DB\Fields\DBFieldsRetriver;
 use Core\Managers\PlayerManager;
 use Desperados;
+use Desperados\Game\Factories\TurnFactory;
 use Desperados\Game\Managers\GangMemberManager;
 use Desperados\Game\Managers\StatsManager;
+use Desperados\Game\Turn\TurnManager;
 
 /**
  * Description of GameSetup
@@ -33,10 +34,17 @@ class GameSetup {
      */
     private $gangMemberManager;
 
+    /**
+     * 
+     * @var TurnManager
+     */
+    private $turnManager;
+
     public function __construct(Desperados $game) {
         $this->playerManager = $game->getPlayerManager();
         $this->statsManager = $game->getStatsManager();
         $this->gangMemberManager = $game->getGangMemberManager();
+        $this->turnManager = $game->getTurnManager();
     }
 
     public function setup($rawPlayers, $options) {
@@ -47,11 +55,14 @@ class GameSetup {
         $players = $this->playerManager->findBy(
                 [],
                 null,
-                [DBFieldsRetriver::retriveFieldByPropertyName("no", $players)] //order by
+                ["no"] //order by
         );
-        echo '<pre>';
-        var_dump($players);
-        die;
+
+        $turns = [];
+        foreach ($players as $player) {
+            $turns[] = TurnFactory::create($player);
+        }
+        $this->turnManager->create($turns);
     }
 
 }

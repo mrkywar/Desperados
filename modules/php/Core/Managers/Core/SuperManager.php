@@ -119,7 +119,7 @@ abstract class SuperManager extends DBRequester {
      *                  BEGIN - Generic methods
      * ---------------------------------------------------------------------- */
 
-    protected function create($items) {
+    public function create($items) {
         $fields = $this->getInsertFields($items);
         $table = $this->getTable($items);
 

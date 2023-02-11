@@ -5,6 +5,7 @@ use Desperados\Game\GameTools\GameSetup;
 use Desperados\Game\Managers\DiceManager;
 use Desperados\Game\Managers\GangMemberManager;
 use Desperados\Game\Managers\StatsManager;
+use Desperados\Game\Turn\TurnManager;
 use Desperados\Game\ZombieTrait;
 
 $swdNamespaceAutoload = function ($class) {
@@ -61,6 +62,12 @@ class Desperados extends Table {
 
     /**
      * 
+     * @var TurnManager
+     */
+    private $turnManager;
+
+    /**
+     * 
      * @var DiceManager
      */
     private $diceManager;
@@ -74,6 +81,7 @@ class Desperados extends Table {
         $this->statsManager = new StatsManager();
         $this->gangMemberManager = new GangMemberManager();
         $this->diceManager = new DiceManager();
+        $this->turnManager = new TurnManager();
 
         self::initGameStateLabels(array(
                 //    "my_first_global_variable" => 10,
@@ -102,11 +110,9 @@ class Desperados extends Table {
 //        $this->playerManager->initNewGame($players, $options);
 //        $this->statsManager->initNewGame();
 //        $this->gangMemberManager->initNewGame();
-        
+
         $gameSetup = new GameSetup($this);
         $gameSetup->setup($players, $options);
-        
-        
 
 //        $this->playerManager->drawGangs();
 //
@@ -234,6 +240,14 @@ class Desperados extends Table {
      */
     public function getDiceManager(): DiceManager {
         return $this->diceManager;
+    }
+
+    /**
+     * 
+     * @return TurnManager
+     */
+    public function getTurnManager(): TurnManager {
+        return $this->turnManager;
     }
 
 }

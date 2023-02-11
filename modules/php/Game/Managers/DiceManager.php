@@ -16,29 +16,18 @@ use const DICE_NUMBER;
  */
 class DiceManager extends SuperManager {
 
-    public function initNewPlayerTurn(Player $player) {
-        $dices = [];
-        for ($i = 0; $i < DICE_NUMBER; $i++) {
-            $dices[] = DiceFactory::create($player);
-        }
-
-        $this->create($dices);
-
-//        $diceThrow = new DiceThrow();Player $player
-//        $diceThrow->setPlayer($player)
-//                ->setLunches(1)
-//                ->setId(0)
-//                ->setDice1(DiceFactory::create($player))
-//                ->setDice2(DiceFactory::create($player))
-//                ->setDice3(DiceFactory::create($player))
-//                ->setDice4(DiceFactory::create($player));
-//        
-//        
-//        $this->create($diceThrow);
-    }
-
     protected function initSerializer(): Serializer {
         return new Serializer(Dice::class);
+    }
+
+    public function initNewRound() {
+        $dices = [];
+        for ($i = 0; $i < DICE_NUMBER; $i++) {
+            $dices[] = new Dice();
+        }
+        $this->create($dices);
+
+        return $this->findBy([], DICE_NUMBER, ["id"]);
     }
 
 }

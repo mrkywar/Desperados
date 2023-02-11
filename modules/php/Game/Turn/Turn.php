@@ -74,33 +74,11 @@ class Turn extends Model {
     private $dice4Id;
 
     /* -------------------------------------------------------------------------
-     *                  BEGIN - Unpersisted property
-     * ---------------------------------------------------------------------- */
-
-    /**
-     * 
-     * @var DiceManager
-     */
-    private $diceManager;
-
-    /**
-     * 
-     * @var StatsManager
-     */
-    private $statManager;
-
-    /* -------------------------------------------------------------------------
      *                  BEGIN - Constructor 
      * ---------------------------------------------------------------------- */
 
-    public function __construct(Player $player) {
-
-        $this->diceManager = Desperados::getInstance()->getDiceManager();
-        $this->statManager = Desperados::getInstance()->getStatsManager();
-
-        $actualTurn = $this->statManager->getPlayerStat("player_turns_number", $player);
-        var_dump($actualTurn);
-        die;
+    public function __construct() {
+        $this->setRollCount(1);
     }
 
     /* -------------------------------------------------------------------------
@@ -178,7 +156,28 @@ class Turn extends Model {
     }
 
     public function addDice(Desperados\Game\Material\Dice $dice) {
-        
+        if (null === $this->dice1Id) {
+            $this->dice1Id = $dice->getId();
+        } elseif (null === $this->dice2Id) {
+            $this->dice2Id = $dice->getId();
+        } elseif (null === $this->dice3Id) {
+            $this->dice3Id = $dice->getId();
+        } elseif (null === $this->dice4Id) {
+            $this->dice4Id = $dice->getId();
+        } else {
+            throw new TurnException("TE-01 : Only 4 dice for a turn");
+        }
+    }
+
+    public function getDices() {
+        $dm = \Desperados::getInstance()->getDiceManager();
+        return $dm->findBy(["id" => [
+                        $this->dice1Id,
+                        $this->dice2Id,
+                        $this->dice3Id,
+                        $this->dice4Id
+                    ]]
+        );
     }
 
 }

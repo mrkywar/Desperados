@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `gangmember` (
   `member_difficulty` int(2) NOT NULL, 
   `member_category` varchar(50) NOT NULL, 
   `member_position` int(2) NOT NULL, 
-  `member_allocation`int(10) UNSIGNED NOT NULL,
+  `member_allocation` int(10) UNSIGNED NOT NULL,
   PRIMARY KEY (`member_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
@@ -55,6 +55,18 @@ CREATE TABLE IF NOT EXISTS `dice` (
     `dice_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
     `dice_position` varchar(50),
     `dice_position_arg` varchar(50),
-    `dice_actual_face` int(2),
+    `dice_actual_face` int(2) UNSIGNED NOT NULL,
     PRIMARY KEY (`dice_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+CREATE TABLE IF NOT EXISTS `turn` (
+    `turn_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+    `turn_player_id` int(10) UNSIGNED NOT NULL,
+    `turn_number` int(5) UNSIGNED NOT NULL,
+    `turn_roll_count` int(1) UNSIGNED NOT NULL,
+    `turn_dice_1_id` int(10) UNSIGNED NOT NULL,
+    `turn_dice_2_id` int(10) UNSIGNED NOT NULL,
+    `turn_dice_3_id` int(10) UNSIGNED NOT NULL,
+    `turn_dice_4_id` int(10) UNSIGNED NOT NULL,
+    PRIMARY KEY (`turn_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
