@@ -1,7 +1,12 @@
 <?php
 
 use Core\Managers\PlayerManager;
+<<<<<<< Updated upstream
 use Desperados\Game\Managers\DiceManager;
+=======
+use Desperados\Game\GameTools\GameDataRetriver;
+use Desperados\Game\GameTools\GameSetup;
+>>>>>>> Stashed changes
 use Desperados\Game\Managers\GangMemberManager;
 use Desperados\Game\Managers\StatsManager;
 use Desperados\Game\ZombieTrait;
@@ -62,7 +67,11 @@ class Desperados extends Table {
      * 
      * @var DiceManager
      */
+<<<<<<< Updated upstream
     private $diceManager;
+=======
+    private $turnManager;
+>>>>>>> Stashed changes
 
     public function __construct() {
         parent::__construct();
@@ -118,6 +127,7 @@ class Desperados extends Table {
      */
 
     protected function getAllDatas() {
+<<<<<<< Updated upstream
         $result = array();
 
         $this->diceManager->initNewPlayerTurn();
@@ -131,6 +141,12 @@ class Desperados extends Table {
         $sql = "SELECT player_id id, player_score score FROM player ";
         $result['players'] = self::getCollectionFromDb($sql);
 
+=======
+        $dataRetriver = new GameDataRetriver($this);
+        $result = $dataRetriver->retrive(self::getCurrentPlayerId());
+//        echo '<pre>';
+//        var_dump($result);die;
+>>>>>>> Stashed changes
         return $result;
     }
 
