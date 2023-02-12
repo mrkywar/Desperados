@@ -2,43 +2,8 @@
 
 namespace Desperados\Game\Material;
 
-use Core\Models\Core\Model;
+class Dice {
 
-/**
- * Description of Dice
- *
- * @author Mr_Kywar mr_kywar@gmail.com
- * @ORM\Table{"name":"dice"}
- */
-class Dice extends Model {
-
-    /**
-     * 
-     * @var int|null
-     * @ORM\Column{"type":"integer", "name":"dice_id", "exclude":["insert"]}
-     * @ORM\Id
-     */
-    private $id;
-
-    /**
-     * 
-     * @var string|null
-     * @ORM\Column{"type":"string", "name":"dice_position","default":"null"}
-     */
-    private $position;
-
-    /**
-     * 
-     * @var string|null
-     * @ORM\Column{"type":"string", "name":"dice_position_arg","default":"null"}
-     */
-    private $positionArg;
-
-    /**
-     * 
-     * @var int
-     * @ORM\Column{"type":"integer", "name":"dice_actual_face", "default":0}
-     */
     private $actualFace;
 
     /* -------------------------------------------------------------------------
@@ -53,38 +18,11 @@ class Dice extends Model {
      *                  BEGIN - Getters & Setters 
      * ---------------------------------------------------------------------- */
 
-    public function getId(): ?int {
-        return $this->id;
-    }
-
-    public function getPosition(): ?string {
-        return $this->position;
-    }
-
-    public function getPositionArg(): ?string {
-        return $this->positionArg;
-    }
-
-    public function getActualFace(): int {
+    public function getActualFace() {
         return $this->actualFace;
     }
 
-    public function setId(?int $id) {
-        $this->id = $id;
-        return $this;
-    }
-
-    public function setPosition(?string $position) {
-        $this->position = $position;
-        return $this;
-    }
-
-    public function setPositionArg(?string $positionArg) {
-        $this->positionArg = $positionArg;
-        return $this;
-    }
-
-    public function setActualFace(int $actualFace) {
+    public function setActualFace($actualFace) {
         $this->actualFace = $actualFace;
         return $this;
     }

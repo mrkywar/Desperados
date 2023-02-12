@@ -11,12 +11,12 @@ use Desperados\Game\Material\Dice;
  */
 abstract class DiceFactory {
 
-    static public function create() {
+    static public function create($actualFace = null) {
         $dice = new Dice();
-//        if (null !== $player) {
-//            $dice->setPosition(POSITION_HAND)
-//                    ->setPositionArg($player->getId());
-//        }
+        if (null !== $actualFace) {
+            $dice->setActualFace($actualFace);
+        }
+
         return $dice;
     }
 

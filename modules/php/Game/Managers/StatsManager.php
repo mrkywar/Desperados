@@ -42,6 +42,12 @@ class StatsManager {
         return $this->setPlayerStat($statName, $player, 1);
     }
 
+    public function getPlayerStat(string $statName, Player $player) {
+        return $this->game->getStat($statName, $player->getId());
+       // 
+    }
+
+
     /**
      * 
      * @param string $statName
