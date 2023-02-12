@@ -65,7 +65,6 @@ class Desperados extends Table {
      */
     private $turnManager;
 
-
     public function __construct() {
         parent::__construct();
 
@@ -92,7 +91,6 @@ class Desperados extends Table {
 
     /*
       setupNewGame:
-
       This method is called only once, when a new game is launched.
       In this method, you must setup the game according to the game rules, so that
       the game is ready to be played.
@@ -114,9 +112,7 @@ class Desperados extends Table {
 
     /*
       getAllDatas:
-
       Gather all informations about current game situation (visible by the current player).
-
       The method is called each time the game interface is displayed to a player, ie:
       _ when the game starts
       _ when a player refreshes the game page (F5)
@@ -141,11 +137,9 @@ class Desperados extends Table {
 
     /*
       getGameProgression:
-
       Compute and return the current game progression.
       The number returned must be an integer beween 0 (=the game just started) and
       100 (= the game is finished or almost finished).
-
       This method is called each time we are in a game state with the "updateGameProgression" property set to true
       (see states.inc.php)
      */
@@ -162,13 +156,11 @@ class Desperados extends Table {
 
     /*
       upgradeTableDb:
-
       You don't have to care about this until your game has been published on BGA.
       Once your game is on BGA, this method is called everytime the system detects a game running with your old
       Database scheme.
       In this case, if you change your Database scheme, you just have to apply the needed changes in order to
       update the game database and allow the game to continue to run with your new version.
-
      */
 
     function upgradeTableDb($from_version) {
