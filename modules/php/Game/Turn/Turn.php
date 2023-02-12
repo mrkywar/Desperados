@@ -5,8 +5,7 @@ namespace Desperados\Game\Turn;
 use Core\Models\Core\Model;
 use Core\Models\Player;
 use Desperados;
-use Desperados\Game\Managers\DiceManager;
-use Desperados\Game\Managers\StatsManager;
+use Desperados\Game\Factories\DiceFactory;
 
 /**
  * Description of Turn
@@ -186,14 +185,12 @@ class Turn extends Model {
     }
 
     public function getDices() {
-        $dm = \Desperados::getInstance()->getDiceManager();
-        return $dm->findBy(["id" => [
-                        $this->dice1Id,
-                        $this->dice2Id,
-                        $this->dice3Id,
-                        $this->dice4Id
-                    ]]
-        );
+        return [
+            DiceFactory::create($this->dice1Face),
+            DiceFactory::create($this->dice2Face),
+            DiceFactory::create($this->dice3Face),
+            DiceFactory::create($this->dice4Face),
+        ];
     }
 
 }
