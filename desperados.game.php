@@ -1,6 +1,7 @@
 <?php
 
 use Core\Managers\PlayerManager;
+use Desperados\Game\GameTools\GameDataRetriver;
 use Desperados\Game\GameTools\GameSetup;
 use Desperados\Game\Managers\GangMemberManager;
 use Desperados\Game\Managers\StatsManager;
@@ -119,18 +120,12 @@ class Desperados extends Table {
      */
 
     protected function getAllDatas() {
-        $result = array();
+        $gdr = new GameDataRetriver($this);
+        $result = $gdr->retrive(self::getCurrentPlayerId());
 
-//        $this->diceManager->initNewPlayerTurn();
-//        $ptn = $this->getStat("player_turns_number", self::getCurrentPlayerId());
-//        $ttn = $this->getStat("table_turns_number");
-////        var_dump($ptn, $ttn);
-
-        $current_player_id = self::getCurrentPlayerId();    // !! We must only return informations visible by this player !!
-        // Get information about players
-        // Note: you can retrieve some extra field you added for "player" table in "dbmodel.sql" if you need it.
-        $sql = "SELECT player_id id, player_score score FROM player ";
-        $result['players'] = self::getCollectionFromDb($sql);
+//        echo "<pre>";
+//        var_dump($result);
+//        die;
 
         return $result;
     }

@@ -6,6 +6,7 @@ use Core\Managers\PlayerManager;
 use Desperados;
 use Desperados\Game\Managers\GangMemberManager;
 use Desperados\Game\Managers\StatsManager;
+use Desperados\Game\Material\Dice;
 use Desperados\Game\Turn\TurnManager;
 
 /**
@@ -44,7 +45,6 @@ class GameDataRetriver {
         $this->statManager = $game->getStatsManager();
         $this->turnManager = $game->getTurnManager();
         $this->gangManager = $game->getGangMemberManager();
-
     }
 
     public function retrive(int $playerId) {
@@ -62,23 +62,37 @@ class GameDataRetriver {
 
         $gangs = [];
         foreach ($this->playerManager->findBy() as $player) {
-            $gangs[$player->getId()] = $this->gangManager->findBy([
+            $gangMembers = $this->gangManager->findBy([
                 "playerId" => $player->getId()
             ]);
+            $gangs[$player->getId()] = $this->displayGang($gangMembers);
         }
 
         $result = [
-            "dices" => $turn->getDices(),
+            "dices" => $this->displayDices($turn->getDices()),
             "gangs" => $gangs
         ];
-        
+
         return $result;
     }
-    
-    
-    
-    
-    
-    
+
+    private function displayGang(array $gangMembers) {
+        return $this->gangManager->getSerializer()->serialize($gangMembers);
+    }
+
+    private function displayDices(array $dices) {
+        $rawdices = [];
+        foreach ($dices as $dice) {
+            $rawdices[] = $this->displayDice($dice);
+        }
+        return $rawdices;
+    }
+
+    private function displayDice(Dice $dice) {
+        return [
+            "actualFace" => $dice->getActualFace(),
+            "face" => $dice->getFace(),
+        ];
+    }
 
 }
